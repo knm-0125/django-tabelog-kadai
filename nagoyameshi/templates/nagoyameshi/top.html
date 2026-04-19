@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>NAGOYAMESHI</title>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+    <p>こんにちは、{{ user.username }}さん</p>
+    <a href="/logout/">ログアウト</a>
+{% else %}
+    <a href="/login/">ログイン</a>
+    <a href="/register/">新規登録</a>
+{% endif %}
+
+    <h1>NAGOYAMESHI トップページ</h1>
+
+    <a href="/favorites/">お気に入り一覧</a>
+
+    <form method="get" action="/">
+        <input type="text" name="keyword" placeholder="店名で検索">
+
+        <select name="category">
+            <option value="">すべてのカテゴリ</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="sort">
+            <option value="">並び替えなし</option>
+            <option value="name_asc">名前昇順</option>
+            <option value="name_desc">名前降順</option>
+            <option value="new">新しい順</option>
+            <option value="old">古い順</option>
+        </select>
+
+        <button type="submit">検索</button>
+    </form>
+
+    {% for shop in shops %}
+        <h2>
+            <a href="/shop/{{ shop.id }}/">
+                {{ shop.name }}
+            </a>
+        </h2>
+        <p>{{ shop.description }}</p>
+        <p>{{ shop.address }}</p>
+        <hr>
+    {% endfor %}
+</body>
+</html>

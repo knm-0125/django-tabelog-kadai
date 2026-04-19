@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>お気に入り一覧</title>
+</head>
+<body>
+    <h1>お気に入り一覧</h1>
+
+    {% for favorite in favorites %}
+         <h2>
+            <a href="/shop/{{ favorite.shop.id }}/">
+                {{ favorite.shop.name }}
+            </a>
+         </h2>
+         <p>{{ favorite.shop.description }}</p>
+
+         <form method="post" action="/favorites/{{ favorite.id }}/delete/">
+            {% csrf_token %}
+            <button type="submit">お気に入り削除</button>
+         </form>
+         
+         <hr>
+    {% empty %}
+        <p>お気に入りはまだありません。</p>
+    {% endfor %}
+
+    <a href="/">トップに戻る</a>
+</body>
+</html>

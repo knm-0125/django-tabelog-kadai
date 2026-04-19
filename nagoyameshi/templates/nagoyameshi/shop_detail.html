@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ shop.name }}</title>
+</head>
+<body>
+    <h1>{{ shop.name }}</h1>
+    <p>{{ shop.description }}</p>
+    <p>{{ shop.address }}</p>
+
+    {% if user.is_authenticated %}
+        <form method="post" action="/shop/{{ shop.id }}/favorite/">
+            {% csrf_token %}
+            <button type="submit">お気に入り追加</button>
+        </form>
+    {% endif %}
+
+    <h2>レビュー一覧</h2>
+
+    <a href="/shop/{{ shop.id }}/review/">レビューを書く</a>
+
+    {% for review in reviews %}
+        <p>評価:{{ review.score }}</p>
+        <p>コメント:{{ review.comment }}</p>
+        <hr>
+    {% empty %}
+        <p>まだレビューはありません。</p>
+    {% endfor %}
+
+    <a href="/">← 戻る</a>
+</body>
+</html>
