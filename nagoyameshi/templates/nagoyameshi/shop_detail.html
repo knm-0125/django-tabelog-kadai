@@ -3,6 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ shop.name }}</title>
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            margin: 0;
+
+            background-color: #f8f8f8;
+
+        }
+
+        header {
+
+            background-color: #ff8c42;
+
+            color: white;
+
+            padding: 20px;
+
+        }
+
+        .container {
+
+            width: 80%;
+
+            margin: 30px auto;
+
+        }
+
+        .card {
+
+            background-color: white;
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+        }
+
+        a {
+
+            text-decoration: none;
+
+            color: #ff8c42;
+
+        }
+
+        button {
+
+            padding: 8px 12px;
+
+            background-color: #ff8c42;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+        }
+
+        .review {
+
+            border-top: 1px solid #ddd;
+
+            margin-top: 10px;
+
+            padding-top: 10px;
+
+        }
+
+    </style>
 </head>
 <body>
     <h1>{{ shop.name }}</h1>
@@ -27,6 +104,12 @@
     {% empty %}
         <p>まだレビューはありません。</p>
     {% endfor %}
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'reservation_create' shop.id %}">予約する</a>
+    {% else %}
+        <a href="{% url 'login' %}">予約するにはログインしてください。</a>
+    {% endif %}
 
     <a href="/">← 戻る</a>
 </body>

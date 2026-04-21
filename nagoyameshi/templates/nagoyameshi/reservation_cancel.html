@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>予約キャンセル</title>
+</head>
+<body>
+    <h1>予約キャンセル</h1>
+
+    <p>{{ reservation.shop.name }} の予約をキャンセルしますか？</p>
+    <p>予約日:{{ reservation.reserved_date }}</p>
+    <p>予約時間:{{ reservation.reserved_time }}</p>
+    <p>人数:{{ reservation.number_of_people }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">キャンセルする</button>
+    </form>
+
+    <a href="{% url 'reservation_list' %}">予約一覧へ戻る</a>
+</body>
+</html>

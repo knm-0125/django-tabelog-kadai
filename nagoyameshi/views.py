@@ -1,9 +1,15 @@
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.urls import reverse
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth import login
-from .models import Shop, Review, Category, Favorite
+from .models import Shop, Review, Category, Favorite, Reservation
 
 def top(request):
     shops = Shop.objects.all()
@@ -85,6 +91,53 @@ def review_create(request, shop_id):
     return render(request, 'nagoyameshi/review_form.html', {'shop':shop})
 
 @login_required
+def reservation_create(request, shop_id):
+    shop = get_object_or_404(Shop, id=shop_id)
+
+    if request.method == 'POST':
+        reserved_date = request.POST.get('reserved_date')
+        reserved_time = request.POST.get('reserved_time')
+        number_of_people = request.POST.get('number_of_people')
+
+        Reservation.objects.create(
+            user=request.user,
+            shop=shop,
+            reserved_date=reserved_date,
+            reserved_time=reserved_time,
+            number_of_people=number_of_people,
+        )
+        messages.success(request, "予約が完了しました！")
+
+        return redirect('reservation_list')
+
+    context = {
+        'shop': shop
+    }
+    return render(request, 'nagoyameshi/reservation_form.html', context)
+
+@login_required
+def reservation_list(request):
+    reservations = Reservation.objects.filter(user=request.user).order_by('-reserved_date', '-reserved_time')
+
+    context = {
+        'reservations' : reservations
+    }
+    return render(request, 'nagoyameshi/reservation_list.html', context)
+
+@login_required
+def reservation_cancel(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+
+    if request.method == 'POST':
+        reservation.delete()
+        return redirect('reservation_list')
+
+    context = {
+        'reservation' : reservation
+    }
+    return render(request, 'nagoyameshi/reservation_cancel.html', context)
+
+@login_required
 def add_favorite(request, shop_id):
     shop = get_object_or_404(Shop, id=shop_id)
 
@@ -114,17 +167,57 @@ def remove_favorite(request, favorite_id):
 def register_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
         user = User.objects.create_user(
             username=username,
+            email=email,
             password=password
         )
+        user.is_active = False
+        user.save()
 
-        login(request, user)
-        return redirect('top')
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+
+        verify_url = request.build_absolute_uri(
+            reverse('verify_email', kwargs={'uidb64': uid, 'token': token})
+        )
+
+        send_mail(
+            subject='メール認証のご案内',
+            message=f'以下のURLをクリックして認証を完了してください。\n{verify_url}',
+            from_email=None,
+            recipient_list=[email],
+        )
+
+        return render(request, 'nagoyameshi/email_sent.html')
 
     return render(request, 'nagoyameshi/register.html')
+
+def verify_email(request, uidb64, token):
+    try:
+
+        uid = force_str(urlsafe_base64_decode(uidb64))
+
+        user = User.objects.get(pk=uid)
+
+    except:
+
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+
+        user.is_active = True
+
+        user.save()
+
+        return render(request, 'nagoyameshi/email_verified.html')
+
+    else:
+
+        return render(request, 'nagoyameshi/email_invalid.html')
 
 def login_view(request):
     if request.method == 'POST':

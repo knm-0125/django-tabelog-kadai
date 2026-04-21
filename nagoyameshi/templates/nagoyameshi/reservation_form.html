@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>予約フォーム</title>
+</head>
+<body>
+    <h1>{{ shop.name }} の予約</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label>予約日</label>
+            <input type="date" name="reserved_date">
+        </p>
+        <p>
+            <label>予約時間</label>
+            <input type="time" name="reserved_time">
+        </p>
+        <p>
+            <label>人数</label>
+            <input type="number" name="number_of_people">
+        </p>
+        <button type="submit">予約する</button>
+    </form>
+
+    <a href="{% url 'shop_detail' shop.id %}">店舗詳細に戻る</a>
+</body>
+</html>

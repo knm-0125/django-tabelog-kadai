@@ -2,10 +2,87 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>NAGOYAMESHI</title>
+    <title>NAGOYAMESHI トップページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f8f8f8;
+        }
+
+        header {
+            background-color: #ff8c42;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+        }
+
+        .nav-links {
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #ff8c42;
+            font-weight: bold;
+        }
+
+        .search-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .search-box input,
+        .search-box select,
+        .search-box button {
+            padding: 8px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .shop-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0,1);
+        }
+
+        .shop-card h2 {
+            margin-top: 0;
+        }
+        
+        .shop-card a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .shop-card a:hover {
+            color: #ff8c42;
+        }
+
+        .auth-links {
+            margin-bottom: 15px;
+        }
+
+        .auth-links a {
+            margin-right: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-
+    <header>
 {% if user.is_authenticated %}
     <p>こんにちは、{{ user.username }}さん</p>
     <a href="/logout/">ログアウト</a>
@@ -13,7 +90,8 @@
     <a href="/login/">ログイン</a>
     <a href="/register/">新規登録</a>
 {% endif %}
-
+    </header>
+    
     <h1>NAGOYAMESHI トップページ</h1>
 
     <a href="/favorites/">お気に入り一覧</a>
@@ -38,6 +116,10 @@
 
         <button type="submit">検索</button>
     </form>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'reservation_list' %}">予約一覧</a>
+    {% endif %}
 
     {% for shop in shops %}
         <h2>

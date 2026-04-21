@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>予約一覧</title>
+</head>
+<body>
+
+{% if messages %}
+    {% for messages in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+    <h1>予約一覧</h1>
+
+    {% for reservation in reservations %}
+        <div>
+            <h2>{{ reservation.shop.name }}</h2>
+            <p>予約日:{{ reservation.reserved_date }}</p>
+            <p>予約時間:{{ reservation.reserved_time }}</p>
+            <P>人数:{{ reservation.number_of_people }}</P>
+
+            <a href="{% url 'reservation_cancel' reservation.id %}">キャンセル</a>
+        </div>
+        <hr>
+    {% empty %}
+    <p>予約はまだありません。</p>
+    {% endfor %}
+
+    <a href="{% url 'top' %}">トップへ戻る</a>
+</body>
+</html>
