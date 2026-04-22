@@ -2,11 +2,17 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>認証完了</title>
 </head>
 <body>
-    <h1>メール認証が完了しました</h1>
-    <p>ログインできるようになりました。</p>
-    <a href="{% url 'login' %}">ログインする</a>
+<div class="container">
+    <div class="card">
+        <h1>メール認証が完了しました</h1>
+        <p>アカウントが有効化されました。ログインしてください。</p>
+        <a href="{% url 'login' %}" class="btn">ログインへ</a>
+    </div>
+</div>
 </body>
 </html>

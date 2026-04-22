@@ -1,19 +1,42 @@
-<h1>会員登録</h1>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
 
-<form method="post">
-    {% csrf_token %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <p>
-        <label>ユーザー名</label>
-        <input type="text" name="username">
-    </p>
+    <title>会員登録</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>会員登録</h1>
 
-    <p>
-        <label>パスワード</label>
-        <input type="password" name="password">
-    </p>
+            <form method="post">
+                {% csrf_token %}
 
-    <button type="submit">登録</button>
-</form>
+                <p>
+                    <label>ユーザー名</label><br>
+                    <input type="text" name="username" placeholder="ユーザー名">
+                </p>
 
-<a href="/">戻る</a>
+                <p>
+                    <label>メールアドレス</label><br>
+                    <input type="email" name="email" placeholder="メールアドレス">
+                </p>
+
+                <p>
+                    <label>パスワード</label><br>
+                    <input type="password" name="password" placeholder="パスワード">
+                </p>
+
+                <button type="submit" class="btn">登録</button>
+            </form>
+
+            <br>
+            <a href="/">戻る</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -59,13 +59,18 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            return redirect('top')
+            if user.is_active:
+                login(request, user)
+                return redirect('top')
+            else:
+                return render(request, 'nagoyameshi/login.html', {
+                    'error': 'メール認証が完了していません'
+                })
         else:
-            return render(request, 'nagoyameshi/login.html',{
+            return render(request, 'nagoyameshi/login.html', {
                 'error': 'ユーザー名またはパスワードが違います'
             })
-    
+
     return render(request, 'nagoyameshi/login.html')
 
 def logout_view(request):
@@ -191,6 +196,7 @@ def register_view(request):
             from_email=None,
             recipient_list=[email],
         )
+        print(verify_url)
 
         return render(request, 'nagoyameshi/email_sent.html')
 
