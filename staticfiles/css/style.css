@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+}
+
+/* コンテナ */
+.container {
+    width: 400%;
+    margin: 80px auto;
+}
+
+/* 見出し */
+h1, h2 {
+    color: #333;
+}
+
+/* カード（お店一覧とか） */
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+.btn:hover {
+    background-color: #e65c00;
+}
+
+/* フォーム */
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+/* ナビゲーション */
+.navbar {
+    background-color: #ff6600;
+    padding: 10px;
+}
+
+.navbar a {
+    color: white;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
