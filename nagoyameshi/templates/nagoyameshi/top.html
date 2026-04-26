@@ -1,107 +1,26 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
+{% extends 'nagoyameshi/base.html' %}
+{% load static %}
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>NAGOYAMESHI トップページ</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f8f8f8;
-        }
+{% block content %}
+<div style="position: relative;">
 
-        header {
-            background-color: #ff8c42;
-            color: white;
-            padding: 20px;
-        }
+  <img src="/static/img/nagoya.jpg" style="width:100%; height:400px; object-fit:cover; display:block;">
 
-        .container {
-            width: 80%;
-            margin: 30px auto;
-        }
+<div style="position: absolute; top:45%; left: 50%; transform:translate(-50%, -50%); color: white; text-align:center;"></div>
 
-        .nav-links {
-            margin-bottom: 20px;
-        }
+    <h2>名古屋ならではの味を見つけよう</h2>
+    <p>NAGOYAMESHIは名古屋のB級グルメサイトです。</p>
+    <p style="color: gray; margin-top:10px;">
+    *新規登録後、確認メールを送信します
+    </p>
+</div>
 
-        .nav-links a {
-            margin-right: 15px;
-            text-decoration: none;
-            color: #ff8c42;
-            font-weight: bold;
-        }
 
-        .search-box {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .search-box input,
-        .search-box select,
-        .search-box button {
-            padding: 8px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-        }
-
-        .shop-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0,1);
-        }
-
-        .shop-card h2 {
-            margin-top: 0;
-        }
-        
-        .shop-card a {
-            text-decoration: none;
-            color: #333;
-        }
-
-        .shop-card a:hover {
-            color: #ff8c42;
-        }
-
-        .auth-links {
-            margin-bottom: 15px;
-        }
-
-        .auth-links a {
-            margin-right: 12px;
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-<div class="container"></div>
-    <header>
-{% if user.is_authenticated %}
-    <p>こんにちは、{{ user.username }}さん</p>
-    <a href="/logout/">ログアウト</a>
-{% else %}
-    <a href="/login/">ログイン</a>
-    <a href="/register/">新規登録</a>
-{% endif %}
-    </header>
-    
-    <h1>NAGOYAMESHI トップページ</h1>
+<div class="container">
 
     <a href="/favorites/">お気に入り一覧</a>
 
     <form method="get" action="/">
-        <input type="text" name="keyword" placeholder="店名で検索">
 
         <select name="category">
             <option value="">すべてのカテゴリ</option>
@@ -125,17 +44,13 @@
         <a href="{% url 'reservation_list' %}" class="btn">予約一覧</a>
     {% endif %}
 
-{% for shop in shops %}
-<div class="card">
-    <h2>
-        <a href="/shop/{{ shop.id }}/">
-            {{ shop.name }}
-        </a>
-    </h2>
-    <p>{{ shop.description }}</p>
-    <p>{{ shop.address }}</p>
+<div class="shop-list">
+  {% for shop in shops %}
+    <div class="shop-card">
+      <h3><a href="{% url 'shop_detail' shop.id %}">{{ shop.name }}</a></h3>
+      <p>{{ shop.category.name }}</p>
+      <p>{{ shop.price_range }}</p>
+    </div>
+  {% endfor %}
 </div>
-{% endfor %}
-</div>
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}NAGOYAMESHI{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header>
+    <h1><a href="/">NAGOYAMESHI</a></h1>
+
+    <div>
+        {% if user.is_authenticated %}
+            <span>こんにちは、{{ user.username }}さん</span>
+            <a href="/logout/">ログアウト</a>
+        {% else %}
+            <a href="/login/">ログイン</a>
+            <a href="/register/">新規登録</a>
+        {% endif %}
+    </div>
+</header>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
